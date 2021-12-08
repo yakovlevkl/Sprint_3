@@ -2,14 +2,13 @@ package ru.practicum.scooter;
 
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import io.restassured.response.ResponseBody;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.ArrayList;
 
 import static io.restassured.RestAssured.given;
 
-public class ScooterRegisterCourier {
+public class RegisterCourier {
 
     /*
     метод регистрации нового курьера
@@ -24,7 +23,7 @@ public class ScooterRegisterCourier {
     JsonPath responseBody;
 
 
-    ScooterRegisterCourier() {
+    RegisterCourier() {
         // с помощью библиотеки RandomStringUtils генерируем логин
         // метод randomAlphabetic генерирует строку, состоящую только из букв,
         // в качестве параметра передаём длину строки
@@ -35,7 +34,7 @@ public class ScooterRegisterCourier {
         this.courierFirstName = RandomStringUtils.randomAlphabetic(10);
     }
 
-    ScooterRegisterCourier(String courierLogin, String courierPassword, String courierFirstName) {
+    RegisterCourier(String courierLogin, String courierPassword, String courierFirstName) {
         this.courierLogin = courierLogin;
         this.courierPassword = courierPassword;
         this.courierFirstName = courierFirstName;

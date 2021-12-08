@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 
 
 public class CourierCreateTest {
-    ScooterRegisterCourier courier;
+    RegisterCourier courier;
     ArrayList<String> loginPass;
     String courierLogin;
     String courierPassword;
@@ -28,8 +28,8 @@ public class CourierCreateTest {
     @Test
     @DisplayName("Checking the possibility of creating a courier")
     @Description("Test for /api/v1/courier endpoint")
-    public void canCreateCourier() {
-        courier = new ScooterRegisterCourier();
+    public void testCanCreateCourier() {
+        courier = new RegisterCourier();
         loginPass = courier.registerNewCourierAndReturnLoginPassword();
         assertFalse(loginPass.isEmpty());
         courierLogin = courier.courierLogin;
@@ -39,8 +39,8 @@ public class CourierCreateTest {
     @Test
     @DisplayName("Checking cannot create two identical couriers")
     @Description("Test for /api/v1/courier endpoint")
-    public void controlCantCreateTwoIdenticalCouriers() {
-        courier = new ScooterRegisterCourier(courierLogin, courierPassword, courierFirstName);
+    public void testCantCreateTwoIdenticalCouriers() {
+        courier = new RegisterCourier(courierLogin, courierPassword, courierFirstName);
         courier.registerNewCourierAndReturnLoginPassword();
         courier.registerNewCourierAndReturnLoginPassword();
         assertTrue(courier.registerNewCourierAndReturnLoginPassword().isEmpty());
@@ -49,9 +49,9 @@ public class CourierCreateTest {
     @Test
     @DisplayName("Checking to create a courier, need to pass all the required fields to the handle")
     @Description("Test for /api/v1/courier endpoint")
-    public void tryCreateCouriersWithoutLogin() {
+    public void testCreateCouriersWithoutLogin() {
         courierLogin = "";
-        courier = new ScooterRegisterCourier(courierLogin, courierPassword, courierFirstName);
+        courier = new RegisterCourier(courierLogin, courierPassword, courierFirstName);
         courier.registerNewCourierAndReturnLoginPassword();
         assertTrue(courier.registerNewCourierAndReturnLoginPassword().isEmpty());
     }
@@ -59,14 +59,14 @@ public class CourierCreateTest {
     @Test
     @DisplayName("Checking the request returns the correct response code")
     @Description("Test for /api/v1/courier endpoint")
-    public void checkReturnsCorrectResponseCode() {
-        courier = new ScooterRegisterCourier(courierLogin, courierPassword, courierFirstName);
+    public void testReturnsCorrectResponseCode() {
+        courier = new RegisterCourier(courierLogin, courierPassword, courierFirstName);
         courier.registerNewCourierAndReturnLoginPassword();
         assertEquals(courier.responseCode, 201);
-        courier = new ScooterRegisterCourier(courierLogin, courierPassword, courierFirstName);
+        courier = new RegisterCourier(courierLogin, courierPassword, courierFirstName);
         courier.registerNewCourierAndReturnLoginPassword();
         assertEquals(courier.responseCode, 409);
-        courier = new ScooterRegisterCourier("", courierPassword, courierFirstName);
+        courier = new RegisterCourier("", courierPassword, courierFirstName);
         courier.registerNewCourierAndReturnLoginPassword();
         assertEquals(courier.responseCode, 400);
     }
@@ -74,8 +74,8 @@ public class CourierCreateTest {
     @Test
     @DisplayName("Checking successful request returns ok: true")
     @Description("Test for /api/v1/courier endpoint")
-    public void successfulRequestReturnsTrue() {
-        courier = new ScooterRegisterCourier(courierLogin, courierPassword, courierFirstName);
+    public void testSuccessfulRequestReturnsTrue() {
+        courier = new RegisterCourier(courierLogin, courierPassword, courierFirstName);
         courier.registerNewCourierAndReturnLoginPassword();
         assertTrue(courier.responseBody.getBoolean("ok"));
     }
@@ -83,8 +83,8 @@ public class CourierCreateTest {
     @Test
     @DisplayName("Checking if one of the fields is missing, the request returns an error")
     @Description("Test for /api/v1/courier endpoint")
-    public void checkResponseCodeIfOneFieldsIsMissing() {
-        courier = new ScooterRegisterCourier("", courierPassword, courierFirstName);
+    public void testResponseCodeIfOneFieldsIsMissing() {
+        courier = new RegisterCourier("", courierPassword, courierFirstName);
         courier.registerNewCourierAndReturnLoginPassword();
         assertEquals(courier.responseCode, 400);
     }
@@ -92,8 +92,8 @@ public class CourierCreateTest {
     @Test
     @DisplayName("Checking if you create a user with a username that already exists, an error is returned")
     @Description("Test for /api/v1/courier endpoint")
-    public void checkResponseCodeIfUserAlreadyExists() {
-        courier = new ScooterRegisterCourier(courierLogin, courierPassword, courierFirstName);
+    public void testResponseCodeIfUserAlreadyExists() {
+        courier = new RegisterCourier(courierLogin, courierPassword, courierFirstName);
         courier.registerNewCourierAndReturnLoginPassword();
         courier.registerNewCourierAndReturnLoginPassword();
         assertEquals(courier.responseCode, 409);
@@ -101,7 +101,7 @@ public class CourierCreateTest {
 
     @After
     public void rollBck(){
-        ScooterDeleteCourier courier = new ScooterDeleteCourier();
+        DeleteCourier courier = new DeleteCourier();
         courier.deleteCourier(courierLogin, courierPassword);
     }
 }

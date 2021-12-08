@@ -1,19 +1,16 @@
 package ru.practicum.scooter;
 
 import io.restassured.response.Response;
-import org.apache.commons.lang3.RandomStringUtils;
-
-import java.util.ArrayList;
 
 import static io.restassured.RestAssured.given;
 
-public class ScooterDeleteCourier {
+public class DeleteCourier {
     /*
     метод удаления курьера
     удаление по логину и паролю
     */
     public Boolean deleteCourier(String courierLogin, String courierPassword) {
-        ScooterLoginCourier loginId = new ScooterLoginCourier(courierLogin, courierPassword);
+        LoginCourier loginId = new LoginCourier(courierLogin, courierPassword);
         try {
             Integer courierId = loginId.getIdCourier();
             Response response = given()
