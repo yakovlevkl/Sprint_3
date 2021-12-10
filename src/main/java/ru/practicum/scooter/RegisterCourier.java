@@ -1,5 +1,7 @@
 package ru.practicum.scooter;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.Step;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -8,7 +10,7 @@ import java.util.ArrayList;
 
 import static io.restassured.RestAssured.given;
 
-public class RegisterCourier {
+class RegisterCourier {
 
     /*
     метод регистрации нового курьера
@@ -18,7 +20,7 @@ public class RegisterCourier {
 
     String courierLogin;
     String courierPassword;
-    String courierFirstName;
+    private String courierFirstName;
     int responseCode;
     JsonPath responseBody;
 
@@ -41,9 +43,8 @@ public class RegisterCourier {
 
     }
 
-    public ArrayList<String> registerNewCourierAndReturnLoginPassword(){
-
-
+    @Step("Регистрация новго пользователя")
+    ArrayList<String> registerNewCourierAndReturnLoginPassword(){
         // создаём список, чтобы метод мог его вернуть
         ArrayList<String> loginPass = new ArrayList<>();
 
@@ -67,7 +68,7 @@ public class RegisterCourier {
             loginPass.add(courierLogin);
             loginPass.add(courierPassword);
         }
-
+        Allure.attachment("возвращаем список", String.valueOf(loginPass));
         // возвращаем список
         return loginPass;
 

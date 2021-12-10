@@ -1,6 +1,8 @@
 package ru.practicum.scooter;
 
 import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 import org.junit.After;
 import org.junit.Before;
@@ -9,7 +11,16 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class CourierLoginTest {
-    /*
+    private String courierLogin;
+    private String courierPassword;
+
+    @Before
+    @Step("Регистрация новго пользователя")
+    public void setUp() {
+        courierLogin = "NiNja";
+        courierPassword = "adsdas";
+        String courierFirstName = "BruceLee";
+        /*
         1. курьер может авторизоваться;
         2. для авторизации нужно передать все обязательные поля;
         3. система вернёт ошибку, если неправильно указать логин или пароль;
@@ -21,22 +32,12 @@ public class CourierLoginTest {
         п.п.2,4 -- это одно и тоже
         п.п.3,5 --так же взаимо исключающие
      */
-    RegisterCourier courier;
-    Integer courierId;
-    String courierLogin;
-    String courierPassword;
-    String courierFirstName;
-
-    @Before
-    public void setUp() {
-        courierLogin = "NiNja";
-        courierPassword = "adsdas";
-        courierFirstName = "BruceLee";
-        courier = new RegisterCourier(courierLogin, courierPassword, courierFirstName);
+        RegisterCourier courier = new RegisterCourier(courierLogin, courierPassword, courierFirstName);
         courier.registerNewCourierAndReturnLoginPassword();
     }
 
     @Test
+    @Feature("Логин курьера")
     @DisplayName("Checking the possibility courier can login")
     @Description("Test for /api/v1/courier/login endpoint")
     public void testLoginCourier() {
@@ -45,6 +46,7 @@ public class CourierLoginTest {
     }
 
     @Test
+    @Feature("Логин курьера")
     @DisplayName("Checking for authorization, need to pass all the required fields")
     @Description("Test for /api/v1/courier/login endpoint")
     public void testEmptyPasswordForLogin() {
@@ -53,6 +55,7 @@ public class CourierLoginTest {
     }
 
     @Test
+    @Feature("Логин курьера")
     @DisplayName("Checking for authorization, need to pass all the required fields")
     @Description("Test for /api/v1/courier/login endpoint")
     public void testEmptyLoginForLogin() {
@@ -61,6 +64,7 @@ public class CourierLoginTest {
     }
 
     @Test
+    @Feature("Логин курьера")
     @DisplayName("Checking for the system will return an error if the username is incorrect")
     @Description("Test for /api/v1/courier/login endpoint")
     public void testIncorrectLoginForLogin() {
@@ -69,6 +73,7 @@ public class CourierLoginTest {
     }
 
     @Test
+    @Feature("Логин курьера")
     @DisplayName("Checking for the system will return an error if password is incorrect")
     @Description("Test for /api/v1/courier/login endpoint")
     public void testIncorrectPasswordForLogin() {
@@ -77,6 +82,7 @@ public class CourierLoginTest {
     }
 
     @Test
+    @Feature("Логин курьера")
     @DisplayName("Checking for a successful request returns an id.")
     @Description("Test for /api/v1/courier/login endpoint")
     public void testLoginIdCourier() {
@@ -88,8 +94,10 @@ public class CourierLoginTest {
     }
 
     @After
+    @Step("Удаление пользователя")
     public void rollBck(){
-        DeleteCourier courier = new DeleteCourier();
+        LoginCourier loginId = new LoginCourier(courierLogin, courierPassword);
+        DeleteCourier courier = new DeleteCourier(loginId);
         courier.deleteCourier(courierLogin, courierPassword);
     }
 }

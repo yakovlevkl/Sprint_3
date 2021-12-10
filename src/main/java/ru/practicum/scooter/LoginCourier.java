@@ -1,12 +1,14 @@
 package ru.practicum.scooter;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.Step;
 import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
 
 public class LoginCourier {
 
-    String loginRequestBody;
+    private String loginRequestBody;
 
     LoginCourier(String courierLogin, String courierPassword) {
         this.loginRequestBody = "{\"login\":\"" + courierLogin + "\","
@@ -23,11 +25,17 @@ public class LoginCourier {
                 .post("https://qa-scooter.praktikum-services.ru/api/v1/courier/login");
     }
 
-    public int loginCourier(){
+    @Step("Логин курьера")
+    int loginCourier(){
+        int statusCode = getResponse().statusCode();
+        Allure.attachment("Получено значение: ", String.valueOf(statusCode));
         return getResponse().statusCode();
     }
 
-    public int getIdCourier(){
-        return getResponse().getBody().jsonPath().getInt("id");
+    @Step("Получение id курьера")
+    int getIdCourier(){
+        int id = getResponse().getBody().jsonPath().getInt("id");
+        Allure.attachment("Получено значение: ", String.valueOf(id));
+        return id;
     }
 }

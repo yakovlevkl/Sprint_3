@@ -1,5 +1,8 @@
 package ru.practicum.scooter;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
+import io.qameta.allure.junit4.DisplayName;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -26,9 +29,11 @@ public class OrderCreateParametersTest {
     }
 
     @Test
+    @Feature("Создание заказа")
+    @DisplayName("Checking can specify one of the colors — BLACK AND GREY")
+    @Description("Test for /api/v1/orders endpoint")
     public void getFood() {
         CreateOrder order = new CreateOrder(typeColor);
-        order.getResponse().statusCode();
         assertEquals(statusRequest, order.getResponse().statusCode());
     }
 }

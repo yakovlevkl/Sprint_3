@@ -1,6 +1,7 @@
 package ru.practicum.scooter;
 
 import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
 import io.qameta.allure.junit4.DisplayName;
 import org.junit.After;
 import org.junit.Before;
@@ -21,7 +22,8 @@ public class OrderCreateTest {
     }
 
     @Test
-    @DisplayName("Checking can specify one of the colors — BLACK AND GREY")
+    @Feature("Создание заказа")
+    @DisplayName("Control return track")
     @Description("Test for /api/v1/orders endpoint")
     public void testOrderGetTrack() {
         String json_file = "src/main/resources/order_test_no_color.json";

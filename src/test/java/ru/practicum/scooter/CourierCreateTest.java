@@ -1,6 +1,7 @@
 package ru.practicum.scooter;
 
 import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
 import io.qameta.allure.junit4.DisplayName;
 import org.junit.After;
 import org.junit.Before;
@@ -12,11 +13,10 @@ import static org.junit.Assert.*;
 
 
 public class CourierCreateTest {
-    RegisterCourier courier;
-    ArrayList<String> loginPass;
-    String courierLogin;
-    String courierPassword;
-    String courierFirstName;
+    private RegisterCourier courier;
+    private String courierLogin;
+    private String courierPassword;
+    private String courierFirstName;
 
     @Before
     public void setUp() {
@@ -26,17 +26,19 @@ public class CourierCreateTest {
     }
 
     @Test
+    @Feature("Создание курьера")
     @DisplayName("Checking the possibility of creating a courier")
     @Description("Test for /api/v1/courier endpoint")
     public void testCanCreateCourier() {
         courier = new RegisterCourier();
-        loginPass = courier.registerNewCourierAndReturnLoginPassword();
+        ArrayList<String> loginPass = courier.registerNewCourierAndReturnLoginPassword();
         assertFalse(loginPass.isEmpty());
         courierLogin = courier.courierLogin;
         courierPassword = courier.courierPassword;
     }
 
     @Test
+    @Feature("Создание курьера")
     @DisplayName("Checking cannot create two identical couriers")
     @Description("Test for /api/v1/courier endpoint")
     public void testCantCreateTwoIdenticalCouriers() {
@@ -47,6 +49,7 @@ public class CourierCreateTest {
     }
 
     @Test
+    @Feature("Создание курьера")
     @DisplayName("Checking to create a courier, need to pass all the required fields to the handle")
     @Description("Test for /api/v1/courier endpoint")
     public void testCreateCouriersWithoutLogin() {
@@ -57,6 +60,7 @@ public class CourierCreateTest {
     }
 
     @Test
+    @Feature("Создание курьера")
     @DisplayName("Checking the request returns the correct response code")
     @Description("Test for /api/v1/courier endpoint")
     public void testReturnsCorrectResponseCode() {
@@ -72,6 +76,7 @@ public class CourierCreateTest {
     }
 
     @Test
+    @Feature("Создание курьера")
     @DisplayName("Checking successful request returns ok: true")
     @Description("Test for /api/v1/courier endpoint")
     public void testSuccessfulRequestReturnsTrue() {
@@ -81,6 +86,7 @@ public class CourierCreateTest {
     }
 
     @Test
+    @Feature("Создание курьера")
     @DisplayName("Checking if one of the fields is missing, the request returns an error")
     @Description("Test for /api/v1/courier endpoint")
     public void testResponseCodeIfOneFieldsIsMissing() {
@@ -90,7 +96,8 @@ public class CourierCreateTest {
     }
 
     @Test
-    @DisplayName("Checking if you create a user with a username that already exists, an error is returned")
+    @Feature("Создание курьера")
+    @DisplayName("Checking if create a user with a username that already exists, an error is returned")
     @Description("Test for /api/v1/courier endpoint")
     public void testResponseCodeIfUserAlreadyExists() {
         courier = new RegisterCourier(courierLogin, courierPassword, courierFirstName);
@@ -101,7 +108,8 @@ public class CourierCreateTest {
 
     @After
     public void rollBck(){
-        DeleteCourier courier = new DeleteCourier();
+        LoginCourier loginId = new LoginCourier(courierLogin, courierPassword);
+        DeleteCourier courier = new DeleteCourier(loginId);
         courier.deleteCourier(courierLogin, courierPassword);
     }
 }
