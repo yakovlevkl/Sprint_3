@@ -42,9 +42,7 @@ public class CourierDeleteTest {
     public void testDeleteCourierWithoutId() {
         DeleteCourier courier = new DeleteCourier(loginId, false);
         Response response = courier.deleteCourier(courierLogin, courierPassword);
-        assertEquals(404, response.getStatusCode());
-        System.out.println("В API ошибка при запросе без id возвращает 404, нужно 400," +
-                " в ассерт поставил 404, чтобы тест не падал");
+        assertEquals(400, response.getStatusCode());
     }
 
     @Test

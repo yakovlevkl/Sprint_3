@@ -76,8 +76,7 @@ public class OrderAcceptTest {
     @Description("Test for /api/v1/orders/accept/:id endpoint")
     public void testAcceptOrderIfOrderIdEmpty() {
         AcceptOrder response = new AcceptOrder("", courierId);
-        assertEquals(404, response.acceptOrderFromCourier().getStatusCode());
-        System.out.println("Ошибка в API. Ожидается код 400 по факту возвращется 404, поставил 404, чтобы тест не падал");
+        assertEquals(400, response.acceptOrderFromCourier().getStatusCode());
     }
 
     @Test
