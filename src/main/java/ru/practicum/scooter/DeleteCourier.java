@@ -6,7 +6,7 @@ import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
 
-class DeleteCourier {
+class DeleteCourier extends BaseUrl{
 
 
     private final LoginCourier loginId;
@@ -40,16 +40,11 @@ class DeleteCourier {
         Allure.attachment("Login: ", String.valueOf(courierLogin));
         Allure.attachment("Password: ", String.valueOf(courierPassword));
         if (this.getCourierId) {
-            try {
                 this.courierId = String.valueOf(loginId.getIdCourier());
-            }catch (Exception e){
-                System.out.println("Courier:" + courierLogin + " not deleted. Reason: it doesn't seem to exist: " + e);
-                this.courierId = "0";
-            }
         }
         return  given()
                 .pathParam("id", this.courierId)
                 .when()
-                .delete("https://qa-scooter.praktikum-services.ru/api/v1/courier/{id}");
+                .delete(getBaseUrl() +  "/api/v1/courier/{id}");
     }
 }

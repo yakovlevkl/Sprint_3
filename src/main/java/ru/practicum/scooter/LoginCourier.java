@@ -3,16 +3,18 @@ package ru.practicum.scooter;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
+import org.json.JSONObject;
 
 import static io.restassured.RestAssured.given;
 
-public class LoginCourier {
+public class LoginCourier extends BaseUrl {
 
-    private String loginRequestBody;
+    JSONObject loginRequestBody;
 
     LoginCourier(String courierLogin, String courierPassword) {
-        this.loginRequestBody = "{\"login\":\"" + courierLogin + "\","
-                + "\"password\":\"" + courierPassword + "\"}";
+        this.loginRequestBody = new JSONObject()
+                .put("login", courierLogin)
+                .put("password",courierPassword);
     }
 
     public Response getResponse(){
@@ -20,9 +22,9 @@ public class LoginCourier {
         return given()
                 .header("Content-type", "application/json")
                 .and()
-                .body(this.loginRequestBody)
+                .body(this.loginRequestBody.toString())
                 .when()
-                .post("https://qa-scooter.praktikum-services.ru/api/v1/courier/login");
+                .post(getBaseUrl() +  "/api/v1/courier/login");
     }
 
     @Step("Логин курьера")

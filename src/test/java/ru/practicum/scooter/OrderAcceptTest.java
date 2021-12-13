@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 
 /*  Задание Принять заказ
@@ -34,8 +36,7 @@ public class OrderAcceptTest {
         courier.registerNewCourierAndReturnLoginPassword();
         loginId = new LoginCourier(courierLogin, courierPassword);
         courierId = String.valueOf(loginId.getIdCourier());
-        String json_file = "src/main/resources/order_test_no_color.json";
-        String orderTrack = String.valueOf(new CreateOrder(json_file).getResponse().getBody().jsonPath().getInt("track"));
+        String orderTrack = String.valueOf(new CreateOrder(List.of("BLACK")).getResponse().getBody().jsonPath().getInt("track"));
         GetOrderByNumber response = new GetOrderByNumber(orderTrack);
         orderId = String.valueOf(response.getOrder().getBody().jsonPath().getMap("order").get("id"));
     }
@@ -47,6 +48,8 @@ public class OrderAcceptTest {
     public void testAcceptOrderOk() {
         AcceptOrder response = new AcceptOrder(orderId, courierId);
         assertEquals("true", response.acceptOrderFromCourier().getBody().jsonPath().getString("ok"));
+        DeleteCourier courier = new DeleteCourier(loginId);
+        courier.deleteCourier(courierLogin, courierPassword);
     }
 
     @Test
@@ -79,7 +82,7 @@ public class OrderAcceptTest {
 
     @Test
     @Feature("Принять заказ")
-    @DisplayName("еесли передать неверный номер заказа, запрос вернёт ошибку.")
+    @DisplayName("если передать неверный номер заказа, запрос вернёт ошибку.")
     @Description("Test for /api/v1/orders/accept/:id endpoint")
     public void testAcceptOrderIfOrderIdWrong() {
         AcceptOrder response = new AcceptOrder("123321", courierId);
@@ -88,8 +91,6 @@ public class OrderAcceptTest {
 
     @After
     public void rollBck(){
-        DeleteCourier courier = new DeleteCourier(loginId);
-        courier.deleteCourier(courierLogin, courierPassword);
     }
 }
 

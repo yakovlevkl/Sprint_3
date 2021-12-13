@@ -17,10 +17,16 @@
         <!-- версия Aspectj -->
         <aspectj.version>1.9.7</aspectj.version>
         <!-- версия Allure -->
-        <allure.version>2.15.0</allure.version>
+        <allure.version>2.16.1</allure.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20211205</version>
+        </dependency>
+
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-junit4</artifactId>

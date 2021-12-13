@@ -1,1 +1,0 @@
-src\main\resources\order_test_no_color.json

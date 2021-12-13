@@ -6,9 +6,9 @@ import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
 
-class GetOrderByNumber {
+class GetOrderByNumber extends BaseUrl {
 
-    private String orderTrack;
+    private final String orderTrack;
 
     GetOrderByNumber(String orderTrack) {
         this.orderTrack = orderTrack;
@@ -21,7 +21,7 @@ class GetOrderByNumber {
         return given()
                 .queryParams("t", this.orderTrack)
                 .when()
-                .get("https://qa-scooter.praktikum-services.ru/api/v1/orders/track");
+                .get(getBaseUrl() +  "/api/v1/orders/track");
     }
 }
 

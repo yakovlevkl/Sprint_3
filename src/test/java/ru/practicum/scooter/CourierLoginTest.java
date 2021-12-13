@@ -41,8 +41,10 @@ public class CourierLoginTest {
     @DisplayName("Checking the possibility courier can login")
     @Description("Test for /api/v1/courier/login endpoint")
     public void testLoginCourier() {
-        LoginCourier courier = new LoginCourier(courierLogin, courierPassword);
-        assertEquals(courier.loginCourier(),200 );
+        LoginCourier loginId = new LoginCourier(courierLogin, courierPassword);
+        assertEquals(loginId.loginCourier(),200 );
+        DeleteCourier courier = new DeleteCourier(loginId);
+        courier.deleteCourier(courierLogin, courierPassword);
     }
 
     @Test
@@ -86,18 +88,17 @@ public class CourierLoginTest {
     @DisplayName("Checking for a successful request returns an id.")
     @Description("Test for /api/v1/courier/login endpoint")
     public void testLoginIdCourier() {
-        LoginCourier courier = new LoginCourier(courierLogin, courierPassword);
-        System.out.println(courier.getIdCourier());
-        if (courier.getIdCourier() < 0) {
+        LoginCourier loginId = new LoginCourier(courierLogin, courierPassword);
+        System.out.println(loginId.getIdCourier());
+        if (loginId.getIdCourier() < 0) {
             throw new Error("id less than zero");
         }
+        DeleteCourier courier = new DeleteCourier(loginId);
+        courier.deleteCourier(courierLogin, courierPassword);
     }
 
     @After
     @Step("Удаление пользователя")
     public void rollBck(){
-        LoginCourier loginId = new LoginCourier(courierLogin, courierPassword);
-        DeleteCourier courier = new DeleteCourier(loginId);
-        courier.deleteCourier(courierLogin, courierPassword);
     }
 }

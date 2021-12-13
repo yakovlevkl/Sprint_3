@@ -7,6 +7,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 
 public class OrderGetTest {
@@ -14,8 +16,7 @@ public class OrderGetTest {
 
     @Before
     public void setUp() {
-        String json_file = "src/main/resources/order_test_no_color.json";
-        orderTrack = String.valueOf(new CreateOrder(json_file).getResponse().getBody().jsonPath().getInt("track"));
+        orderTrack = String.valueOf(new CreateOrder(List.of("BLACK")).getResponse().getBody().jsonPath().getInt("track"));
     }
 
     @Test

@@ -7,6 +7,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
+
 public class OrderCreateTest {
     /*
         Создание заказа
@@ -26,12 +30,8 @@ public class OrderCreateTest {
     @DisplayName("Control return track")
     @Description("Test for /api/v1/orders endpoint")
     public void testOrderGetTrack() {
-        String json_file = "src/main/resources/order_test_no_color.json";
-        CreateOrder order = new CreateOrder(json_file);
-        System.out.println(order.getResponse().getBody().jsonPath().getInt("track"));
-        if (order.getResponse().getBody().jsonPath().getInt("track") < 0) {
-            throw new Error("track less than zero");
-        }
+        CreateOrder order = new CreateOrder(List.of("BLACK"));
+        assertTrue(order.getResponse().getBody().jsonPath().getInt("track") > 0);
     }
 
     @After

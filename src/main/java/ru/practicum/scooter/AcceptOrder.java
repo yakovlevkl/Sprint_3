@@ -7,7 +7,7 @@ import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
 
-class AcceptOrder {
+class AcceptOrder extends BaseUrl{
 
     private final String orderId;
     private final String courierId;
@@ -21,14 +21,13 @@ class AcceptOrder {
     Response acceptOrderFromCourier() {
         Allure.attachment("ID заказа: ", orderId);
         Allure.attachment("ID курьера: ", courierId);
-        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWIzMWUxODQ4MDljMTAwMzZlOTJlOWQiLCJpYXQiOjE2" +
-                "MzkxMjg3MTAsImV4cCI6MTYzOTczMzUxMH0.dnrR9lBS2LRWh19TZu2Q09HJIrWXd4YO9LQvwPdQCIM";
         return given()
-                    .auth().oauth2(token)
                     .pathParam("id", this.orderId)
+                    .queryParam("courierId", this.courierId)
                     .when()
-                    .put("https://qa-scooter.praktikum-services.ru/api/v1/orders/accept/{id}?courierId="+this.courierId);
+                    .put(getBaseUrl() +  "/api/v1/orders/accept/{id}");
     }
 }
+
 
 

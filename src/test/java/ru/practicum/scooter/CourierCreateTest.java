@@ -20,9 +20,9 @@ public class CourierCreateTest {
 
     @Before
     public void setUp() {
-        courierLogin = "NiNja";
-        courierPassword = "adsdas";
-        courierFirstName = "BruceLee";
+        this.courierLogin = "NiNja";
+        this.courierPassword = "adsdas";
+        this.courierFirstName = "BruceLee";
     }
 
     @Test
@@ -35,6 +35,9 @@ public class CourierCreateTest {
         assertFalse(loginPass.isEmpty());
         courierLogin = courier.courierLogin;
         courierPassword = courier.courierPassword;
+        LoginCourier loginId = new LoginCourier(courierLogin, courierPassword);
+        DeleteCourier courier = new DeleteCourier(loginId);
+        courier.deleteCourier(courierLogin, courierPassword);
     }
 
     @Test
@@ -46,6 +49,9 @@ public class CourierCreateTest {
         courier.registerNewCourierAndReturnLoginPassword();
         courier.registerNewCourierAndReturnLoginPassword();
         assertTrue(courier.registerNewCourierAndReturnLoginPassword().isEmpty());
+        LoginCourier loginId = new LoginCourier(courierLogin, courierPassword);
+        DeleteCourier courier = new DeleteCourier(loginId);
+        courier.deleteCourier(courierLogin, courierPassword);
     }
 
     @Test
@@ -53,26 +59,9 @@ public class CourierCreateTest {
     @DisplayName("Checking to create a courier, need to pass all the required fields to the handle")
     @Description("Test for /api/v1/courier endpoint")
     public void testCreateCouriersWithoutLogin() {
-        courierLogin = "";
-        courier = new RegisterCourier(courierLogin, courierPassword, courierFirstName);
-        courier.registerNewCourierAndReturnLoginPassword();
-        assertTrue(courier.registerNewCourierAndReturnLoginPassword().isEmpty());
-    }
-
-    @Test
-    @Feature("Создание курьера")
-    @DisplayName("Checking the request returns the correct response code")
-    @Description("Test for /api/v1/courier endpoint")
-    public void testReturnsCorrectResponseCode() {
-        courier = new RegisterCourier(courierLogin, courierPassword, courierFirstName);
-        courier.registerNewCourierAndReturnLoginPassword();
-        assertEquals(courier.responseCode, 201);
-        courier = new RegisterCourier(courierLogin, courierPassword, courierFirstName);
-        courier.registerNewCourierAndReturnLoginPassword();
-        assertEquals(courier.responseCode, 409);
         courier = new RegisterCourier("", courierPassword, courierFirstName);
         courier.registerNewCourierAndReturnLoginPassword();
-        assertEquals(courier.responseCode, 400);
+        assertTrue(courier.registerNewCourierAndReturnLoginPassword().isEmpty());
     }
 
     @Test
@@ -80,7 +69,10 @@ public class CourierCreateTest {
     @DisplayName("Checking successful request returns ok: true")
     @Description("Test for /api/v1/courier endpoint")
     public void testSuccessfulRequestReturnsTrue() {
-        courier = new RegisterCourier(courierLogin, courierPassword, courierFirstName);
+        courier = new RegisterCourier(
+                this.courierLogin,
+                this.courierPassword,
+                this.courierFirstName);
         courier.registerNewCourierAndReturnLoginPassword();
         assertTrue(courier.responseBody.getBoolean("ok"));
     }
@@ -93,6 +85,9 @@ public class CourierCreateTest {
         courier = new RegisterCourier("", courierPassword, courierFirstName);
         courier.registerNewCourierAndReturnLoginPassword();
         assertEquals(courier.responseCode, 400);
+        LoginCourier loginId = new LoginCourier(courierLogin, courierPassword);
+        DeleteCourier courier = new DeleteCourier(loginId);
+        courier.deleteCourier(courierLogin, courierPassword);
     }
 
     @Test
@@ -104,12 +99,13 @@ public class CourierCreateTest {
         courier.registerNewCourierAndReturnLoginPassword();
         courier.registerNewCourierAndReturnLoginPassword();
         assertEquals(courier.responseCode, 409);
+        LoginCourier loginId = new LoginCourier(courierLogin, courierPassword);
+        DeleteCourier courier = new DeleteCourier(loginId);
+        courier.deleteCourier(courierLogin, courierPassword);
     }
 
     @After
     public void rollBck(){
-        LoginCourier loginId = new LoginCourier(courierLogin, courierPassword);
-        DeleteCourier courier = new DeleteCourier(loginId);
-        courier.deleteCourier(courierLogin, courierPassword);
+
     }
 }

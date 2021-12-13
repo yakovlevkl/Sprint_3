@@ -5,12 +5,13 @@ import io.qameta.allure.Step;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import static io.restassured.RestAssured.given;
 
-class RegisterCourier {
+class RegisterCourier extends BaseUrl {
 
     /*
     метод регистрации нового курьера
@@ -20,10 +21,10 @@ class RegisterCourier {
 
     String courierLogin;
     String courierPassword;
-    private String courierFirstName;
+    private final String courierFirstName;
     int responseCode;
     JsonPath responseBody;
-
+    JSONObject registerRequestBody;
 
     RegisterCourier() {
         // с помощью библиотеки RandomStringUtils генерируем логин
@@ -47,19 +48,22 @@ class RegisterCourier {
     ArrayList<String> registerNewCourierAndReturnLoginPassword(){
         // создаём список, чтобы метод мог его вернуть
         ArrayList<String> loginPass = new ArrayList<>();
+        Allure.attachment("login ", String.valueOf(this.courierLogin));
+        Allure.attachment("password ", String.valueOf(this.courierPassword));
+        Allure.attachment("firstName ", String.valueOf(this.courierFirstName));
 
         // собираем в строку тело запроса на регистрацию, подставляя в него логин, пароль и имя курьера
-        String registerRequestBody = "{\"login\":\"" + courierLogin + "\","
-                + "\"password\":\"" + courierPassword + "\","
-                + "\"firstName\":\"" + courierFirstName + "\"}";
-
+        this.registerRequestBody = new JSONObject()
+                .put("login", this.courierLogin)
+                .put("password", this.courierPassword)
+                .put("firstName", this.courierFirstName);
         // отправляем запрос на регистрацию курьера и сохраняем ответ в переменную response класса Response
         Response response =  given()
                 .header("Content-type", "application/json")
                 .and()
-                .body(registerRequestBody)
+                .body(this.registerRequestBody.toString())
                 .when()
-                .post("https://qa-scooter.praktikum-services.ru/api/v1/courier");
+                .post(getBaseUrl() +  "/api/v1/courier");
 
         this.responseCode = response.statusCode();
         this.responseBody = response.getBody().jsonPath();
@@ -68,6 +72,7 @@ class RegisterCourier {
             loginPass.add(courierLogin);
             loginPass.add(courierPassword);
         }
+        Allure.attachment("ResponseCode ", String.valueOf(this.responseCode));
         Allure.attachment("возвращаем список", String.valueOf(loginPass));
         // возвращаем список
         return loginPass;
