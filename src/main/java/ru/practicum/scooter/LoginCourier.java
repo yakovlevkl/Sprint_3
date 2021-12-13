@@ -17,6 +17,12 @@ public class LoginCourier extends BaseUrl {
                 .put("password",courierPassword);
     }
 
+    LoginCourier(String courierLogin) {
+        this.loginRequestBody = new JSONObject()
+                .put("login", courierLogin)
+                .put("password:","");
+    }
+
     public Response getResponse(){
         // отправляем запрос на логин курьера возвращаем true или false
         return given()

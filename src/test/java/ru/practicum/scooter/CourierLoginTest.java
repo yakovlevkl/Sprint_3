@@ -89,16 +89,21 @@ public class CourierLoginTest {
     @Description("Test for /api/v1/courier/login endpoint")
     public void testLoginIdCourier() {
         LoginCourier loginId = new LoginCourier(courierLogin, courierPassword);
-        System.out.println(loginId.getIdCourier());
-        if (loginId.getIdCourier() < 0) {
-            throw new Error("id less than zero");
-        }
+        assertTrue(loginId.getIdCourier() > 0);
         DeleteCourier courier = new DeleteCourier(loginId);
         courier.deleteCourier(courierLogin, courierPassword);
     }
 
+    @Test
+    @Feature("Логин курьера")
+    @DisplayName("Проверка зависания сервера в случае ошибки в имени поля password")
+    @Description("Test for /api/v1/courier/login endpoint")
+    public void testLoginIdCourierIncorrectFieldPassword() {
+        LoginCourier courier = new LoginCourier(courierLogin);
+        assertEquals(courier.loginCourier(),400 );
+    }
+
     @After
-    @Step("Удаление пользователя")
     public void rollBck(){
     }
 }
